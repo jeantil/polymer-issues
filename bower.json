@@ -1,0 +1,58 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "authors": [
+    "cedric <cedric.marcone@valraiso.fr>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "app-route": "PolymerElements/app-route#0.9.3",
+    "es6-promise": "jakearchibald/es6-promise#2.3.0",
+    "iron-ajax": "PolymerElements/iron-ajax#1.4.3",
+    "iron-dropdown": "PolymerElements/iron-dropdown#1.5.2",
+    "iron-icon": "PolymerElements/iron-icon#1.0.12",
+    "iron-icons": "polymerelements/iron-icons#1.1.3",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#1.0.11",
+    "iron-list": "PolymerElements/iron-list#1.4.6",
+    "iron-pages": "polymerelements/iron-pages#1.0.8",
+    "iron-media-query": "PolymerElements/iron-media-query#1.0.8",
+    "iron-meta": "PolymerElements/iron-meta#1.1.2",
+    "mercury-paginator": "1.1.2",
+    "neon-animation": "polymerelements/neon-animation#1.2.4",
+    "paper-button": "PolymerElements/paper-button#1.0.14",
+    "paper-checkbox": "polymerelements/paper-checkbox#1.4.1",
+    "paper-card": "polymerelements/paper-card#1.1.6",
+    "paper-dialog": "polymerelements/paper-dialog#1.1.0",
+    "paper-dialog-scrollable": "polymerelements/paper-dialog-scrollable#1.1.5",
+    "paper-dropdown-menu": "polymerelements/paper-dropdown-menu#1.4.1",
+    "paper-fab": "polymerelements/paper-fab#1.2.1",
+    "paper-icon-button": "polymerelements/paper-icon-button#1.1.3",
+    "paper-input": "PolymerElements/paper-input#1.1.20",
+    "paper-item": "polymerelements/paper-item#1.2.1",
+    "paper-listbox": "polymerelements/paper-listbox#1.1.3",
+    "paper-menu": "polymerelements/paper-menu#1.2.2",
+    "paper-progress": "polymerelements/paper-progress#1.0.11",
+    "paper-radio-button": "polymerelements/paper-radio-button#1.2.1",
+    "paper-radio-group": "polymerelements/paper-radio-group#1.2.1",
+    "paper-spinner": "PolymerElements/paper-spinner#1.2.1",
+    "paper-styles": "polymerelements/paper-styles#1.1.5",
+    "paper-toast": "polymerelements/paper-toast#1.3.0",
+    "paper-tooltip": "polymerelements/paper-tooltip#1.1.3",
+    "polymer": "Polymer/Polymer#1.7.0",
+    "polymer-cookie": "andreasonny83/polymer-cookie#1.1.1",
+    "polymer-simple-slider": "1.0.1",
+    "polymer-sortablejs": "0.1.3",
+    "Sortable": "1.5.0-rc1",
+    "Stickyfill": "wilddeer/stickyfill#1.1.4"
+  },
+  "resolutions": {
+    "Sortable": "1.5.0-rc1"
+  }
+}

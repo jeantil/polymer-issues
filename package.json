@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "devDependencies": {
+    "bower": "1.8.0",
+    "del": "1.2.1",
+    "gulp-babel": "5.1.0",
+    "gulp-bower": "0.0.11",
+    "gulp-debug": "3.0.0",
+    "gulp-git": "https://registry.npmjs.org/gulp-git/-/gulp-git-1.12.0.tgz",
+    "gulp-git-bump": "git+ssh://git@gitlab.lizeo.net:rzv2/gulp-git-bump.git",
+    "gulp-livereload": "3.8.1",
+    "gulp-load-plugins": "1.2.0",
+    "gulp-plumber": "1.0.2",
+    "gulp-polylint": "^1.0.3",
+    "gulp-util": "3.0.7",
+    "merge-stream": "1.0.0",
+    "polylint": "2.10.1",
+    "st": "1.2.0",
+    "web-component-tester": "5.0.0"
+  },
+  "dependencies": {
+    "gulp": "3.9.1",
+    "live-server": "^1.2.0"
+  }
+}
