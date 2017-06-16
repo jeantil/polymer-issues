@@ -1,0 +1,99 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-icon/iron-icon.html">
+
+<link rel="import" href="rz-icons.html">
+
+<dom-module id="rz-chip">
+  <template strip-whitespace>
+    <style>
+    :host{
+      display: inline-block;
+    }
+    .container{    
+      display: flex;
+
+      margin: 5px 5px 0 0;
+
+      cursor: default;
+
+      color: #fff;
+      background-color: #2b2c2d;
+
+      align-items: center;
+    }
+
+    .value{
+      display: inline-block;
+      overflow: hidden;
+
+      max-width: 300px;
+      padding: 4px 8px 4px 0;
+
+      user-select: none;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      border-right: 1px solid #666;
+
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin: 4px 6px;
+
+      color: #777;
+    }
+
+    .icon-close{
+      width: 18px;
+      height: 18px;
+      margin: 4px 6px;
+
+      cursor: pointer;
+
+      color: #9c0;
+    }
+    </style>
+    <div class=container>
+      <iron-icon class="icon" icon="[[icon]]" id="icon"></iron-icon>
+      <span id="value" class="value">[[label]]</span>
+      <iron-icon class="icon-close" icon="close" id="close" on-tap="close"></iron-icon>    
+      </div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'rz-chip',
+
+    properties: {
+
+      domain: {
+        type: String,
+        reflectToAttribute: true
+      },
+      level: {
+        type: String,
+        reflectToAttribute: true
+      },
+      value: {
+        type: String,
+        reflectToAttribute: true
+      },
+      label: {
+        type: String,
+        reflectToAttribute: true
+      },
+      icon: {
+        type: String        
+      }
+    },
+
+    close() {      
+      this.fire('chip-close')
+    }
+  })
+  </script>
+</dom-module>

@@ -1,0 +1,197 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="chip.html">
+<link rel="import" href="icon-label-picker.html">
+
+<dom-module id="chip-picker">
+    <template>
+        <style>
+            .chips {
+                flex-grow: 1;
+                flex-direction: row;
+                padding: 0 1em;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+
+            .chips rz-chip {
+                margin: -5px 0;
+            }
+            
+            .chips .header{
+                flex-direction: row;
+                display: flex;
+            }
+            .chips .header paper-input{                
+                flex-grow: 1;
+            }
+        </style>
+
+        <iron-ajax
+            auto=[[_searchEnabled]]
+            id="search-chips-request"
+            url="/chips"
+            params = "[[_chipsParams]]"
+            handle-as="json"            
+            on-response="_onNewChips"
+            debounce-duration="300"></iron-ajax>
+
+        <div class="chips">
+            <div class="header">
+                <icon-label-picker icon="{{_defaultChipType}}" icon-list="[[_chipTypes]]"></icon-label-picker>
+                <paper-input id="chip-search" value="{{searchText}}" label="Add chip"></paper-input>
+            </div>
+
+            <template is="dom-repeat" items="[[_newChips]]" as="chip">
+                <rz-chip domain="[[chip.domain]]" level="[[chip.level]]" value="[[chip.value]]" label="[[chip.value]]" on-tap="_chipSelected"></rz-chip>
+            </template>
+        </div>   
+    </template>
+        <script>
+        'use strict';
+
+        Polymer({
+            is: 'chip-picker',
+            properties:{
+                searchText:{
+                    type:String
+                },
+                auto:{
+                    type:Boolean,
+                    value:false
+                },
+                _defaultChipType: {
+                    type: Object,
+                    value: function() {
+                        return {                         
+                            icon: "filter-list"
+                        };
+                    }
+                },
+                _chipTypes: {
+                    type: Array,
+                    value: function() {
+                        return [
+                            {                         
+                                label: "-",
+                                icon: "filter-list"
+                            },{
+                                label: "Brand",
+                                icon: "cached",
+                                domain: "Pattern",
+                                level: "Brand"
+                            }, {
+                                label: "Range",
+                                icon: "build",
+                                domain: "Pattern",
+                                level: "Range"
+                            }, {
+                                label: "Product",
+                                icon: "class",
+                                domain: "Pattern",
+                                level: "Product"
+                            }, {
+                                label: "Pattern",
+                                icon: "done",
+                                domain: "Pattern",
+                                level: "Name"
+                            }, {
+                                label: "Season",
+                                icon: "drafts",
+                                domain: "Pattern",
+                                level: "Season"
+                            },
+
+                            {
+                                label: "Diameter",
+                                icon: "flag",
+                                domain: "Dimension",
+                                level: "Diameter"
+                            }, {
+                                label: "Geobox",
+                                icon: "folder",
+                                domain: "Dimension",
+                                level: "GeoBox"
+                            }, {
+                                label: "Complete",
+                                icon: "launch",
+                                domain: "Dimension",
+                                level: "Complete"
+                            },
+
+                            {
+                                label: "Maker",
+                                icon: "link",
+                                domain: "Vehicle",
+                                level: "Maker"
+                            }, {
+                                label: "Segment",
+                                icon: "lock",
+                                domain: "Vehicle",
+                                level: "Segment"
+                            }, {
+                                label: "CarType",
+                                icon: "label",
+                                domain: "Vehicle",
+                                level: "CarType"
+                            }, {
+                                label: "Motor",
+                                icon: "language",
+                                domain: "Vehicle",
+                                level: "Motor"
+                            },
+
+                            {
+                                label: "Personae",
+                                icon: "receipt",
+                                domain: "UserProfile",
+                                level: "Personae"
+                            },
+
+                            {
+                                label: "Dealer",
+                                icon: "subject",
+                                domain: "Dealer",
+                                level: "Name"
+                            }
+                        ];
+                    },
+                },
+                 _searchEnabled: {
+                    type: Boolean,
+                    computed: 'computeSearchEnabled(auto,searchText)'
+                },
+                _chipsParams: {
+                    type: Object,
+                    computed: 'computeChipsParams(searchText,_defaultChipType)'
+                },
+                _newChips: {
+                    type: Array
+                },
+                
+            },
+            _chipSelected(event){
+                const chip={
+                    domain : event.target.domain,
+                    level : event.target.level, 
+                    value : event.target.value
+                }
+                this.fire('rz-chip-picked', chip)
+            },
+            
+            _onNewChips(event) {
+                this._newChips = event.detail.response            
+            },
+            computeSearchEnabled(auto, text) {
+                return auto && text;
+            },
+            computeChipsParams(text, chipType) {
+                const params = {}
+                params.text=text
+                if(chipType.domain) {params.domain=chipType.domain}
+                if(chipType.level) {params.level=chipType.level}
+                return params;
+            }
+        });
+        </script>
+</dom-module>

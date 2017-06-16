@@ -44,6 +44,7 @@
     "paper-spinner": "PolymerElements/paper-spinner#1.2.1",
     "paper-styles": "polymerelements/paper-styles#1.1.5",
     "paper-toast": "polymerelements/paper-toast#1.3.0",
+    "paper-toolbar": "polymerelements/paper-toolbar#1.1.7",
     "paper-tooltip": "polymerelements/paper-tooltip#1.1.3",
     "polymer": "Polymer/Polymer#1.7.0",
     "polymer-cookie": "andreasonny83/polymer-cookie#1.1.1",

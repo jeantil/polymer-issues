@@ -1,0 +1,107 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+
+<link rel="import" href="my-item.html">
+
+<dom-module id="my-editor">
+    <template strip-whitespace>
+        <style include="rz-shared-styles">
+
+            .header {
+                display: flex;
+                justify-content : space-between;
+            }
+            iron-list{
+                height: 100vh;
+            }
+        </style>
+
+        <iron-ajax auto
+                   id="requestScenario"
+                   url="/data.json"
+                   params=""
+                   handle-as="json"
+                   on-response="handleResponse"
+                   debounce-duration="300"></iron-ajax>    
+
+        <div class = 'header'>
+
+            <p> Total : [[_computeNrOfExpectations(expectations)]]</p>
+            
+        </div>
+
+        <iron-list items="[[expectations]]" as="item" class="scenario-list" id="scenarios" indexAs="index" selection-enabled>
+            <template>
+                <my-item scenario="[[item]]" index=[[index]]></my-item>
+            </template>
+        </iron-list>
+
+    </template>
+
+    <script>
+        'use strict'
+
+        Polymer({
+            is: 'my-editor',
+
+            properties: {
+
+                scenario : {
+                    type : Object,
+                },
+
+                expectations : {
+                    type : Array,
+                },
+
+                selectedCategory : {
+                  type: String,
+                  value: "All",
+                },
+
+                displayedExpectations : {
+                    type : Array,
+                    computed: 'computeDisplayedExpectations(expectations, selectedCategory)'
+                },
+
+            },
+
+            listeners: { 
+                "rz-relevancy-scenario-search--remove": "onSearchRemove"              
+            },
+
+            onSearchRemove(e) {
+                const i = this.expectations.indexOf(e.detail);
+                if(i !== -1) {
+                    this.splice('expectations', i, 1);
+                }
+                this.$['remove-search'].generateRequest()
+            },
+
+            _computeNrOfExpectations(expectations) {
+                return expectations.length
+            },
+
+            _computeCategories(expectations) {
+                return expectations.map(c => c.expectations);
+            },
+
+            computeDisplayedExpectations(expectations, selectedCategory) {
+                return expectations;
+            },
+
+            handleResponse: function (data) {
+                this.scenario = data.detail.response;
+                this.expectations = this.scenario.expectations;
+            },
+
+            prepend(scenario){
+                this.unshift('expectations', scenario);          
+            }
+        })
+    </script>
+</dom-module>

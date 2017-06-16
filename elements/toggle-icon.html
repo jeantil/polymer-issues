@@ -1,0 +1,84 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="toggle-icon">
+    <template strip-whitespace>
+        <style>
+            :host {
+                display: block;
+            }
+            #trigger {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+        </style>
+
+        <div id="trigger" on-tap="toggle">
+            <slot name="collapse-trigger"></slot>
+            <iron-icon icon="[[_icon]]" hidden$="[[noIcons]]"></iron-icon>
+        </div>
+        <iron-collapse id="collapse" horizontal$="[[horizontal]]" no-animation$="[[noAnimation]]" opened="[[opened]]">
+            <slot name="collapse-content"></slot>
+        </iron-collapse>
+    </template>
+
+    </template>
+    <script>
+        'use strict';
+
+        Polymer({
+            is: 'toggle-icon',
+
+            properties: {
+                horizontal: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                },
+                noAnimation: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                },
+                opened: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true,
+                    notify: true
+                },
+                expandIcon: {
+                    type: String,
+                    value: 'expand-more'
+                },
+                collapseIcon: {
+                    type: String,
+                    value: 'expand-less'
+                },
+                noIcons: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                },
+                _icon:{
+                    type:String,
+                    computed:'_getIcon(opened, expandIcon, collapseIcon)'
+                }
+            },
+
+            hide() {
+                this.opened = false;
+            },
+            show() {
+                this.opened = true;
+            },
+            toggle() {
+                this.opened = !this.opened;
+            },
+            _getIcon(opened, expandIcon, collapseIcon) {
+                return opened ? collapseIcon : expandIcon;
+            }
+        })
+    </script>
+</dom-module>

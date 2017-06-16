@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="my-nav.html">
+<link rel="import" href="my-editor.html">
+
+<!-- Theme should be loaded last -->
+<!--<link rel="import" href="../rz-shared-styles.html">-->
+<link rel="import" href="theme.html">
+
+<dom-module id="my-app">
+    <template strip-whitespace>
+
+        <style>
+
+            :host {
+                display: flex;
+            }
+
+            paper-card {
+                flex-grow: 1;
+            }
+
+        </style>
+        <paper-card id="main">
+            <my-nav></my-nav>
+
+            <my-editor id='editor'></my-editor>
+        </paper-card>
+    
+    </template>
+
+    <script>
+        'use strict';
+
+        Polymer({
+            is: 'my-app',
+            listeners:{                
+                'item-created':'onScenarioCreated',
+            },
+            
+            onScenarioCreated(event){
+                this.$.editor.prepend(event.detail);
+            }
+        })
+    </script>
+</dom-module>

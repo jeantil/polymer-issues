@@ -1,0 +1,229 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="toggle-icon.html">
+<link rel="import" href="icon-label-picker.html">
+<link rel="import" href="chip-picker.html">
+
+<dom-module id="my-item">
+    <template strip-whitespace>
+
+        <style>
+            :host{
+                border-bottom: #bdbdbd solid thin;
+                display:block;
+                background-color:white;
+            }
+            [secondary] {
+                font-family: sans-serif;
+                font-size: 1.2rem;
+                color: #737373;
+            }
+
+            paper-item{
+                padding: .5rem;
+                flex-direction: column;
+                display: flex;
+            }
+
+            paper-item .main{
+                flex-direction: row;
+                display: flex;
+                width:100%;
+            }
+
+            paper-item-body {
+                flex-grow: 0;
+                flex-direction: column;
+                display: flex;
+            }
+
+            .title h1 {
+                font-size: 1.4rem;
+                margin: 0;
+                flex-grow: 1;
+            }
+
+            .title p {
+                margin: 0;
+            }
+
+            .chips {
+                flex-grow: 1;
+                flex-direction: row;
+                padding: 0 1em;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+
+            .chips rz-chip {
+                margin: -5px 0;
+            }
+
+            .actions {
+                flex-shrink: 0;
+                flex-direction: column;
+                display: flex;             
+            }
+
+            .actions paper-icon-button {
+                width: 25px;
+                height: 25px;
+                padding: 0;
+            }
+
+            .expanded .form{
+                display: flex;
+                width: 100%;        
+            }
+            
+            .expanded [secondary]{
+                display: none;                
+            }
+
+            .collapsed .form{
+                display: none;
+            }
+            
+            .collapsed [secondary]{
+                display: block;
+            }
+
+            .form{
+                flex-direction: row;
+                display: flex;
+                height:400px;
+            }
+            .form .category{
+                display: flex;
+                flex-shrink: 0;
+            }
+            .form chip-picker{
+                display: flex;
+                flex-grow: 1;
+            }
+            .form paper-icon-button {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+                padding: 0;
+            }
+        </style>
+
+        <div class$="[[_formExpandedClass]]">
+            <paper-item >
+                <div class="main" >
+                    <iron-image class="avatar" sizing="contain" src="[[item.image]]"></iron-image>
+                    <paper-item-body two-line class="title">
+                        <h1>[[scenario.keyword]]</h1>
+                        <p secondary>[[scenario.category]]</p>
+                    </paper-item-body>
+                    <paper-item-body class="chips" >
+                        <template is="dom-repeat" items="[[scenario.expectations]]" as="chip">
+                            <rz-chip domain="[[chip.domain]]" level="[[chip.level]]" value="[[chip.value]]"
+                                    label="[[chip.value]]"></rz-chip>
+                        </template>
+                    </paper-item-body>
+                    <paper-item-body class="actions">                        
+                        <toggle-icon id="toggle-icon" opened={{_expanded}}></toggle-icon>
+                    </paper-item-body>
+                </div>
+                <template is='dom-if' if='{{_expanded}}'>
+                    <div class="form">
+                        <div class="category">
+                            <paper-input id="category-input" value="{{scenario.category}}" label="Category"></paper-input>
+                        </div>
+                        <chip-picker auto="[[_expanded]]"></chip-picker>
+                        <paper-icon-button icon="icons:delete" alt="delete this scenario" on-tap="removeSearch"></paper-icon-button>
+                    </div>
+                </template>
+            </paper-item>
+        </div>
+    </template>
+
+    <script>
+        'use strict';
+
+        Polymer({
+            is: 'my-item',
+
+            properties: {
+                scenario: {
+                    type: Object
+                },
+                index: {
+                    type: Number
+                },
+                onDelete:{
+                    type: Function
+                },
+                onExpand:{
+                    type: Function
+                },
+                _expanded: {
+                    type: Boolean,
+                    value: false
+                },
+
+                _formExpandedClass: {
+                    type: String,
+                    computed: '_getFormClass(_expanded)'
+                }               
+            },
+
+            behaviors: [
+                Polymer.IronResizableBehavior,
+            ],
+            
+            listeners:{
+                'rz-chip-picked':'_onChipPicked',
+                'chip-close':'_onChipClosed'
+            },
+
+            removeSearch() {
+                if(this.onDelete){
+                    this.onDelete(this.scenario);
+                }
+            },
+
+            toggleForm(e) {
+                this._expanded = !this._expanded                 
+                this.fire('rz-relevancy-scenario-item-updated', this.index)
+            },
+
+            _getFormClass(expand) {
+                return expand ? 'expanded' : 'collapsed'
+            },
+            _onChipPicked(event){
+                const chip=event.detail
+                const isNotChip=function(el,idx,arr){
+                    return !(el.domain === chip.domain && 
+                    el.level === chip.level && 
+                    el.value === chip.value);
+                }
+                if(this.scenario.expectations.every(isNotChip)){
+                    this.push('scenario.expectations', chip);
+                }    
+            },
+            _onChipClosed(event){
+                const chip = {}
+                chip.domain=event.path[0].domain
+                chip.level=event.path[0].level
+                chip.value=event.path[0].value
+                const ofChip=function(el, idx, ar){
+                  return el.domain== chip.domain &&
+                    el.level==chip.level && 
+                    el.value==chip.value;
+                }
+                            
+                const idx = this.scenario.expectations.findIndex(ofChip)
+                if(idx>=0){
+                    this.splice('scenario.expectations',idx,1)
+                }
+            }
+        })
+    </script>
+</dom-module>

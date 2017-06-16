@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html"
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="icon-label-picker.html">
+
+<!-- Theme should be loaded last -->
+<!--<link rel="import" href="../rz-shared-styles.html">
+<link rel="import" href="../rz-theme.html">-->
+
+<dom-module id="my-nav">
+    <template strip-whitespace>
+
+        <style>
+            :host {
+                background-color: #9c0;
+            }
+
+            .toolbar {
+                background-color: #9c0;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                position: sticky;
+                z-index: 10;
+                top: 0;
+            }           
+            paper-card {
+                flex-grow: 1;
+            }
+        </style>
+
+
+        <div class="toolbar">
+            <icon-label-picker icon="[[_locale]]" icon-list='[[_locales]]'></icon-label-picker>
+            <div>
+                <paper-icon-button icon="av:play-circle-outline" alt="run"></paper-icon-button>
+                <paper-icon-button icon="add" alt="add" on-tap="createScenario">+</paper-icon-button>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-nav',
+            properties:{
+                _locale:{
+                    type:Object,
+                    value:function(){
+                        return {icon:"extension", label:"fr-FR"}
+                    }
+                },
+                _locales:{
+                    type:Array,
+                    value:function(){
+                        return [
+                            {icon:"info", label:"fr-FR"},
+                            {icon:"settings", label:"en-GB"},
+                            {icon:"face", label:"de-DE"},
+                            {icon:"build", label:"it-IT"}
+                        ]
+                    }
+                }
+            },
+            createScenario(clickEvent) {
+                this.fire('create-item', clickEvent)
+            },
+
+        })
+    </script>
+</dom-module>

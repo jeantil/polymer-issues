@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+
+
+<dom-module id="icon-label-picker">
+    <style>
+        .icon{            
+            display: flex;
+            flex-direction: row;  
+            justify-content: space-between          
+        }
+        .icon iron-icon{
+            margin-left: 5px;
+        }
+        paper-item{
+            margin: 10px;
+        }
+    </style>
+    <template strip-whitespace>
+        <!--<iron-meta type="iconset" list="{{iconsets}}"></iron-meta>-->
+        <paper-menu-button>
+            <paper-icon-button
+                id="iconButton"
+                icon="[[icon.icon]]"
+                class="dropdown-trigger" alt="icon picker">
+            </paper-icon-button>
+        <paper-listbox class="dropdown-content" id="container">
+            <template is="dom-repeat" items="{{iconList}}">
+            <paper-item class="icon" item="[[item]]">
+                <div>[[item.label]]</div> <iron-icon icon="[[item.icon]]"></iron-icon>
+            </paper-item>
+            </template>
+        </paper-listbox>
+        </paper-menu-button>
+    </template>
+    <script>
+        Polymer({
+            is: 'icon-label-picker',
+            properties:{                
+                /**
+                * The selected icon, as string (i.e. 'icons:add-box').
+                * value.
+                */
+                icon: {
+                    type: Object,
+                    notify: true
+                },
+                /**
+                * The icons to be displayed. By default, these are the Material Design
+                * icons.
+                */
+                iconList: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    }
+                }                                
+            },    
+            listeners: {                
+                    'iron-select': '_onIconTap'
+            },
+            ready(){
+                this.icon;
+                this.iconList
+            },
+            _onIconTap: function(event) {
+                const item = event.detail.item;                
+                // If it's in rgb format, convert it first.
+                this.icon =  item.item
+                this.fire('icon-picked', item.item);
+            }
+        })
+    </script>
+</dom-module>
