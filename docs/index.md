@@ -19,4 +19,4 @@ This is what chrome and firefox render
 <img src="fail.png">
 
 When viewing the page using firefox's [tilt plugin](https://addons.mozilla.org/en-US/firefox/addon/tilt/) you can observe this 
-<img src="fail-3D.png">
+<img src="fail-tilt-3D.png">
